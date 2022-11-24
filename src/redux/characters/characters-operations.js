@@ -1,3 +1,4 @@
+// -------- 2 -- with Redax Toolkit ---------------------------------------------------
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
@@ -7,9 +8,9 @@ const getCharacters = createAsyncThunk(
   "characters/fetchCharacters",
   async (_, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get("/character");
-      console.log("data", data);
+      const { data } = await axios.get("/character/?page=1");
 
+      // console.log("data.results", data.results);
       return data.results;
     } catch (error) {
       return rejectWithValue(error);

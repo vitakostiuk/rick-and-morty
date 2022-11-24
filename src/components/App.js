@@ -1,12 +1,13 @@
-import CharactersList from "../components/CharactersList";
-import Filter from "./Filter";
+import { Route, Routes } from "react-router-dom";
+import CharactersPage from "./pages/CharactersPage";
+import SingleCharacterPage from "./pages/SingleCharacterPage";
 
 function App() {
   return (
-    <>
-      <Filter />
-      <CharactersList />
-    </>
+    <Routes>
+      <Route path="/" element={<CharactersPage />}></Route>
+      <Route path="/:id" element={<SingleCharacterPage />}></Route>
+    </Routes>
   );
 }
 

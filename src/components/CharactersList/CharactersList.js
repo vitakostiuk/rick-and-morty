@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import { getCharacters } from "../../redux/characters/characters-operations";
 import {
   getAllCharacters,
@@ -14,7 +15,7 @@ const CharactersList = () => {
   }, [dispatch]);
 
   const characters = useSelector(getAllCharacters);
-  console.log(characters);
+  // console.log("characters", characters);
 
   const filter = useSelector(getFilter).toLowerCase();
 
@@ -26,10 +27,14 @@ const CharactersList = () => {
     <div>
       <ul>
         {characters &&
-          filteredCharactres.map(({ name, image }) => (
-            <li>
-              <h3>{name}</h3>
-              <img src={image} alt={name} width="100px" />
+          filteredCharactres.map(({ name, image, id, status }) => (
+            <li key={id}>
+              <Link to={{ pathname: `${id}` }}>
+                {" "}
+                <h3>{name}</h3>
+                <p>{status}</p>
+                <img src={image} alt={name} width="100px" />
+              </Link>
             </li>
           ))}
       </ul>

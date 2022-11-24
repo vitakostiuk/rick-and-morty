@@ -1,7 +1,9 @@
 import React from "react";
+import { nanoid } from "@reduxjs/toolkit";
 import { useSelector, useDispatch } from "react-redux";
 import { getFilter } from "../../redux/characters/characters-selectors";
-import changeFilter from "../../redux/characters/characters-actions";
+// import changeFilter from "../../redux/characters/characters-actions"; // для createReducer
+import { changeFilter } from "../../redux/characters/characters-reducer"; // для createSlice
 
 const Filter = () => {
   const dispatch = useDispatch();
@@ -9,11 +11,11 @@ const Filter = () => {
   const value = useSelector(getFilter);
   return (
     <div>
-      <label htmlFor="1">Find character by name</label>
+      <label htmlFor={nanoid()}>Find character by name</label>
       <input
         type="text"
         value={value}
-        id="1"
+        id={nanoid()}
         // className={s.Input}
         onChange={(e) => dispatch(changeFilter(e.currentTarget.value))}
       />
