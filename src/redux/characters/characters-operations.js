@@ -6,9 +6,9 @@ axios.defaults.baseURL = "https://rickandmortyapi.com/api";
 
 const getCharacters = createAsyncThunk(
   "characters/fetchCharacters",
-  async (_, { rejectWithValue }) => {
+  async (page = 1, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get("/character/?page=1");
+      const { data } = await axios.get(`/character/?page=${page}`);
 
       // console.log("data.results", data.results);
       return data.results;

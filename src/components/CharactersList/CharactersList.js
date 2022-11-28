@@ -1,6 +1,9 @@
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import Pagination from "@mui/material/Pagination";
+import PaginationItem from "@mui/material/PaginationItem";
+import Stack from "@mui/material/Stack";
+import { Link, NavLink } from "react-router-dom";
 import { getCharacters } from "../../redux/characters/characters-operations";
 import {
   getAllCharacters,
@@ -8,11 +11,13 @@ import {
 } from "../../redux/characters/characters-selectors";
 
 const CharactersList = () => {
+  const [page, setPage] = useState(1);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getCharacters());
-  }, [dispatch]);
+    dispatch(getCharacters(page));
+  }, [dispatch, page]);
 
   const characters = useSelector(getAllCharacters);
   // console.log("characters", characters);
@@ -22,6 +27,16 @@ const CharactersList = () => {
   const filteredCharactres = characters.filter((character) =>
     character.name.toLowerCase().includes(filter)
   );
+
+  const onLoadMore = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
+
+  const handleChangePage = (event, page) => {
+    console.log("event", event);
+    console.log("page", page);
+    setPage(page);
+  };
 
   return (
     <div>
@@ -38,6 +53,25 @@ const CharactersList = () => {
             </li>
           ))}
       </ul>
+      <button type="button" onClick={onLoadMore}>
+        Load more
+      </button>
+      <Stack spacing={2}>
+        <Pagination
+          count={10}
+          variant="outlined"
+          shape="rounded"
+          page={page}
+          onChange={handleChangePage}
+          renderItem={(item) => (
+            <PaginationItem
+              component={NavLink}
+              to={`/?page=${item.page}`}
+              {...item}
+            />
+          )}
+        />
+      </Stack>
     </div>
   );
 };
