@@ -1,56 +1,56 @@
-// import { Route, Routes } from "react-router-dom";
-// import CharactersPage from "./pages/CharactersPage";
-// import SingleCharacterPage from "./pages/SingleCharacterPage";
-// import NotFoundPage from "./pages/NotFoundPage";
-// import LoginPage from "./pages/LoginPage";
-import React from "react";
-import FacebookLogin from "react-facebook-login";
-import { useDispatch } from "react-redux";
-import { login } from "../redux/auth/authSlice";
+import { Route, Routes } from "react-router-dom";
+import CharactersPage from "./pages/CharactersPage";
+import SingleCharacterPage from "./pages/SingleCharacterPage";
+import NotFoundPage from "./pages/NotFoundPage";
+import LoginPage from "./pages/LoginPage";
+// import React from "react";
+// import FacebookLogin from "react-facebook-login";
+// import { useDispatch } from "react-redux";
+// import { login } from "../redux/auth/authSlice";
 
 function App() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const thirdPartyLoginHandler = ({ response, provider, error }) => {
-    console.log(" response>>", response);
-    console.log(" provider>>", provider);
-    console.log(" error>>", error);
-    dispatch(login({ user: response, provider, error }));
-  };
+  // const thirdPartyLoginHandler = ({ response, provider, error }) => {
+  //   console.log(" response>>", response);
+  //   console.log(" provider>>", provider);
+  //   console.log(" error>>", error);
+  //   dispatch(login({ user: response, provider, error }));
+  // };
 
-  const responseFacebook = (response) => {
-    console.log("response >>>", response);
-    if (
-      response.status === "unknown" ||
-      response.status === undefined ||
-      response.error
-    )
-      return thirdPartyLoginHandler({
-        error: true,
-        provider: "facebook",
-        response: {},
-      });
+  // const responseFacebook = (response) => {
+  //   console.log("response >>>", response);
+  //   if (
+  //     response.status === "unknown" ||
+  //     response.status === undefined ||
+  //     response.error
+  //   )
+  //     return thirdPartyLoginHandler({
+  //       error: true,
+  //       provider: "facebook",
+  //       response: {},
+  //     });
 
-    thirdPartyLoginHandler({ error: false, provider: "facebook", response });
-  };
+  //   thirdPartyLoginHandler({ error: false, provider: "facebook", response });
+  // };
   return (
-    <div>
-      <h1>Login</h1>
-      <FacebookLogin
-        appId="519590290217663"
-        // autoLoad={true}
-        fields="name,email,picture"
-        // cssClass={classes.login__btn}
-        callback={responseFacebook}
-        textButton="Login with Facebook"
-      />
-    </div>
-    // <Routes>
-    //   <Route path="/" element={<CharactersPage />}></Route>
-    //   <Route path="/:id" element={<SingleCharacterPage />}></Route>
-    //   <Route path="/login" element={<LoginPage />}></Route>
-    //   <Route path="*" element={<NotFoundPage />}></Route>
-    // </Routes>
+    // <div>
+    //   <h1>Login</h1>
+    //   <FacebookLogin
+    //     appId="519590290217663"
+    //     // autoLoad={true}
+    //     fields="name,email,picture"
+    //     // cssClass={classes.login__btn}
+    //     callback={responseFacebook}
+    //     textButton="Login with Facebook"
+    //   />
+    // </div>
+    <Routes>
+      <Route path="/" element={<CharactersPage />}></Route>
+      <Route path="/:id" element={<SingleCharacterPage />}></Route>
+      <Route path="/login" element={<LoginPage />}></Route>
+      <Route path="*" element={<NotFoundPage />}></Route>
+    </Routes>
   );
 }
 

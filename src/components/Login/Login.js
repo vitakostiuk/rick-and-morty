@@ -35,7 +35,7 @@ const Login = () => {
     <Box className={classes.login}>
       <h1>Login</h1>
       <FacebookLogin
-        appId="1082534248908784"
+        appId="519590290217663"
         // autoLoad={true}
         fields="name,email,picture"
         cssClass={classes.login__btn}
