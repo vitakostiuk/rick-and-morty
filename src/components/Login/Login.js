@@ -8,27 +8,39 @@ import { login } from "../../redux/auth/authSlice";
 const Login = () => {
   const dispatch = useDispatch();
 
-  const thirdPartyLoginHandler = ({ response, provider, error }) => {
-    console.log(" response>>", response);
-    console.log(" provider>>", provider);
-    console.log(" error>>", error);
-    dispatch(login({ user: response, provider, error }));
-  };
+  // const thirdPartyLoginHandler = ({ response, provider, error }) => {
+  //   console.log(" response>>", response);
+  //   console.log(" provider>>", provider);
+  //   console.log(" error>>", error);
+  //   dispatch(login({ user: response, provider, error }));
+  // };
 
+  // const responseFacebook = (response) => {
+  //   console.log("response >>>", response);
+  //   if (
+  //     response.status === "unknown" ||
+  //     response.status === undefined ||
+  //     response.error
+  //   )
+  //     return thirdPartyLoginHandler({
+  //       error: true,
+  //       provider: "facebook",
+  //       response: {},
+  //     });
+
+  //   thirdPartyLoginHandler({ error: false, provider: "facebook", response });
+  // };
   const responseFacebook = (response) => {
     console.log("response >>>", response);
     if (
       response.status === "unknown" ||
       response.status === undefined ||
       response.error
-    )
-      return thirdPartyLoginHandler({
-        error: true,
-        provider: "facebook",
-        response: {},
-      });
+    ) {
+      dispatch(login({ user: {}, provider: "facebook", error: true }));
+    }
 
-    thirdPartyLoginHandler({ error: false, provider: "facebook", response });
+    dispatch(login({ user: response, provider: "facebook", error: false }));
   };
 
   return (
