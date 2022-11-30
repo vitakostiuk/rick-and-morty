@@ -1,78 +1,146 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Pagination from "@mui/material/Pagination";
-import PaginationItem from "@mui/material/PaginationItem";
 import Stack from "@mui/material/Stack";
-import { Link, NavLink } from "react-router-dom";
-import { getCharacters } from "../../redux/characters/characters-operations";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  getCharacters,
+  searchCharacter,
+} from "../../redux/characters/characters-operations";
 import {
   getAllCharacters,
   getFilter,
+  getQuery,
 } from "../../redux/characters/characters-selectors";
 
 const CharactersList = () => {
-  const [page, setPage] = useState(1);
+  let navigate = useNavigate();
+
+  const [pageAllCharactes, setPageAllCharactes] = useState(1);
+  const [pageSingleCharacter, setPageSingleCharacter] = useState(1);
 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getCharacters(page));
-  }, [dispatch, page]);
 
   const characters = useSelector(getAllCharacters);
   // console.log("characters", characters);
 
   const filter = useSelector(getFilter).toLowerCase();
 
+  useEffect(() => {
+    if (filter !== "") return;
+
+    setPageSingleCharacter(1);
+    navigate({ search: `page=${pageAllCharactes}` });
+
+    dispatch(getCharacters(pageAllCharactes));
+  }, [dispatch, filter, navigate, pageAllCharactes]);
+
+  useEffect(() => {
+    if (filter === "") return;
+
+    setPageAllCharactes(1);
+    navigate({ search: `page=${pageSingleCharacter}` });
+
+    const queryParams = {
+      page: pageSingleCharacter,
+      name: filter,
+    };
+    dispatch(searchCharacter(queryParams));
+  }, [dispatch, filter, navigate, pageSingleCharacter]);
+
+  const query = useSelector(getQuery);
+  // console.log("query", query);
+
   const filteredCharactres = characters.filter((character) =>
     character.name.toLowerCase().includes(filter)
   );
 
-  const onLoadMore = () => {
-    setPage((prevPage) => prevPage + 1);
+  const onLoadMoreAll = () => {
+    setPageAllCharactes((prevPage) => prevPage + 1);
   };
 
-  const handleChangePage = (event, page) => {
-    console.log("event", event);
-    console.log("page", page);
-    setPage(page);
+  const onLoadMoreSingle = () => {
+    setPageSingleCharacter((prevPage) => prevPage + 1);
+  };
+
+  const handleChangePageAll = (event, page) => {
+    setPageAllCharactes(page);
+
+    navigate({ search: `page=${page}` });
+  };
+
+  const handleChangePageSingle = (event, page) => {
+    setPageSingleCharacter(page);
+
+    navigate({ search: `page=${page}` });
   };
 
   return (
-    <div>
-      <ul>
-        {characters &&
-          filteredCharactres.map(({ name, image, id, status }) => (
-            <li key={id}>
-              <Link to={{ pathname: `${id}` }}>
-                {" "}
-                <h3>{name}</h3>
-                <p>{status}</p>
-                <img src={image} alt={name} width="100px" />
-              </Link>
-            </li>
-          ))}
-      </ul>
-      <button type="button" onClick={onLoadMore}>
-        Load more
-      </button>
-      <Stack spacing={2}>
-        <Pagination
-          count={10}
-          variant="outlined"
-          shape="rounded"
-          page={page}
-          onChange={handleChangePage}
-          renderItem={(item) => (
-            <PaginationItem
-              component={NavLink}
-              to={`/?page=${item.page}`}
-              {...item}
+    <>
+      {characters && filter === "" && (
+        <div>
+          <ul>
+            {characters &&
+              filteredCharactres.map(({ name, image, id, status }) => (
+                <li key={id}>
+                  <Link to={{ pathname: `${id}` }}>
+                    {" "}
+                    <h3>{name}</h3>
+                    <p>{status}</p>
+                    <img src={image} alt={name} width="100px" />
+                  </Link>
+                </li>
+              ))}
+          </ul>
+          <button type="button" onClick={onLoadMoreAll}>
+            Load more
+          </button>
+          <Stack spacing={2}>
+            <Pagination
+              count={42}
+              variant="outlined"
+              shape="rounded"
+              page={pageAllCharactes}
+              onChange={handleChangePageAll}
             />
-          )}
-        />
-      </Stack>
-    </div>
+          </Stack>
+        </div>
+      )}
+
+      {query && filter !== "" && (
+        <div>
+          <ul>
+            {query &&
+              query.map(({ name, image, id, status }) => (
+                <li key={id}>
+                  <Link to={{ pathname: `${id}` }}>
+                    {" "}
+                    <h3>{name}</h3>
+                    <p>{status}</p>
+                    <img src={image} alt={name} width="100px" />
+                  </Link>
+                </li>
+              ))}
+          </ul>
+          <button type="button" onClick={onLoadMoreSingle}>
+            Load more
+          </button>
+          <Stack spacing={2}>
+            <Pagination
+              count={42}
+              variant="outlined"
+              shape="rounded"
+              page={pageSingleCharacter}
+              onChange={handleChangePageSingle}
+            />
+          </Stack>
+        </div>
+      )}
+
+      {(characters.length === 0 || query.length === 0) && (
+        <div>Empty result</div>
+      )}
+    </>
   );
 };
 

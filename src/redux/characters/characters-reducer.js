@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 // import { createReducer, createSlice } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
-import { getCharacters } from "./characters-operations";
+import { getCharacters, searchCharacter } from "./characters-operations";
 // import changeFilter from "./characters-actions";
 
 // -------reducer for CHARACTERS---------------------------------------------------------------------------
@@ -10,6 +10,7 @@ const initialState = {
   items: [],
   loading: false,
   error: null,
+  query: "",
 };
 
 const characters = createSlice({
@@ -27,6 +28,19 @@ const characters = createSlice({
         state.items = payload;
       })
       .addCase(getCharacters.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+      })
+
+      .addCase(searchCharacter.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(searchCharacter.fulfilled, (state, { payload }) => {
+        state.loading = true;
+        state.query = payload;
+      })
+      .addCase(searchCharacter.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload;
       });

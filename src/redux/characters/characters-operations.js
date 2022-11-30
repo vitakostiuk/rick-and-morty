@@ -18,4 +18,22 @@ const getCharacters = createAsyncThunk(
   }
 );
 
-export { getCharacters };
+const searchCharacter = createAsyncThunk(
+  "characters/searchCharacter",
+  async ({ page = 1, name = "" }, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(`/character/?page=${page}&name=${name}`);
+
+      console.log("data", data);
+      return data.results;
+    } catch (error) {
+      if (error.response.status === 404) {
+        return [];
+      }
+      // console.log("error", error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export { getCharacters, searchCharacter };

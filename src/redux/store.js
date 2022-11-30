@@ -1,6 +1,7 @@
 // ------ with Redax Toolkit-------
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { createLogger } from "redux-logger";
+import authSlice from "./auth/authSlice";
 import charactersReducer from "./characters/characters-reducer";
 
 const logger = createLogger({
@@ -8,8 +9,13 @@ const logger = createLogger({
   timestamp: false,
 });
 
+const rootReducer = combineReducers({
+  characters: charactersReducer,
+  auth: authSlice,
+});
+
 const store = configureStore({
-  reducer: charactersReducer,
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
   devTools: process.env.NODE_ENV === "development",
 });

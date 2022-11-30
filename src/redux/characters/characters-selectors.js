@@ -1,4 +1,5 @@
-const getAllCharacters = (state) => state.characters.items;
-const getFilter = (state) => state.filter;
+const getAllCharacters = (state) => state.characters.characters.items;
+const getQuery = (state) => state.characters.characters.query;
+const getFilter = (state) => state.characters.filter;
 
-export { getAllCharacters, getFilter };
+export { getAllCharacters, getFilter, getQuery };
