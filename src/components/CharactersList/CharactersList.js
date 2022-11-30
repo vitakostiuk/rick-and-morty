@@ -14,6 +14,9 @@ import {
 } from "../../redux/characters/characters-selectors";
 
 const CharactersList = () => {
+  const token = localStorage.getItem("fblst_519590290217663");
+  console.log(token);
+
   let navigate = useNavigate();
 
   const [pageAllCharactes, setPageAllCharactes] = useState(1);
@@ -30,23 +33,27 @@ const CharactersList = () => {
     if (filter !== "") return;
 
     setPageSingleCharacter(1);
-    navigate({ search: `page=${pageAllCharactes}` });
+    if (token !== null) {
+      navigate({ search: `page=${pageAllCharactes}` });
+    }
 
     dispatch(getCharacters(pageAllCharactes));
-  }, [dispatch, filter, navigate, pageAllCharactes]);
+  }, [dispatch, filter, navigate, pageAllCharactes, token]);
 
   useEffect(() => {
     if (filter === "") return;
 
     setPageAllCharactes(1);
-    navigate({ search: `page=${pageSingleCharacter}` });
+    if (token !== null) {
+      navigate({ search: `page=${pageSingleCharacter}` });
+    }
 
     const queryParams = {
       page: pageSingleCharacter,
       name: filter,
     };
     dispatch(searchCharacter(queryParams));
-  }, [dispatch, filter, navigate, pageSingleCharacter]);
+  }, [dispatch, filter, navigate, pageSingleCharacter, token]);
 
   const query = useSelector(getQuery);
   // console.log("query", query);
@@ -66,13 +73,17 @@ const CharactersList = () => {
   const handleChangePageAll = (event, page) => {
     setPageAllCharactes(page);
 
-    navigate({ search: `page=${page}` });
+    if (token !== null) {
+      navigate({ search: `page=${page}` });
+    }
   };
 
   const handleChangePageSingle = (event, page) => {
     setPageSingleCharacter(page);
 
-    navigate({ search: `page=${page}` });
+    if (token !== null) {
+      navigate({ search: `page=${page}` });
+    }
   };
 
   return (

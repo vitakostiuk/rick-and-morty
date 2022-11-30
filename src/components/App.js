@@ -13,8 +13,6 @@ import { getIsLoggedIn } from "../redux/auth/authSelectors";
 function App() {
   const isLoggedIn = useSelector(getIsLoggedIn);
   const token = localStorage.getItem("fblst_519590290217663");
-  console.log(isLoggedIn);
-  console.log(token);
   // const dispatch = useDispatch();
 
   // const thirdPartyLoginHandler = ({ response, provider, error }) => {
