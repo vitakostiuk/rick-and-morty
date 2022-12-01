@@ -71,9 +71,3 @@ const Login = () => {
 };
 
 export default Login;
-
-// Google Client ID
-// 828146371625-viag1i2gitam5d877c4s4h8gem5vabsl.apps.googleusercontent.com
-
-// Google Client Secret
-// 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

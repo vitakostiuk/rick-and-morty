@@ -17,7 +17,6 @@ import {
 const CharactersList = () => {
   const isLoggedIn = useSelector(getIsLoggedIn);
   const token = localStorage.getItem("fblst_519590290217663");
-  console.log(token);
 
   let navigate = useNavigate();
 
