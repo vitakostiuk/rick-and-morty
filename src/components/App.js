@@ -12,7 +12,9 @@ import { getIsLoggedIn } from "../redux/auth/authSelectors";
 
 function App() {
   const isLoggedIn = useSelector(getIsLoggedIn);
-  const token = localStorage.getItem("fblst_519590290217663");
+  const tokenFb = localStorage.getItem("fblst_519590290217663");
+  const tokenGoogle = localStorage.getItem("oauth2_ss");
+  console.log("tokenGoogle", tokenGoogle);
   // const dispatch = useDispatch();
 
   // const thirdPartyLoginHandler = ({ response, provider, error }) => {
@@ -52,15 +54,33 @@ function App() {
     <Routes>
       <Route
         path="/"
-        element={isLoggedIn || token ? <CharactersPage /> : <LoginPage />}
+        element={
+          isLoggedIn || tokenFb || tokenGoogle ? (
+            <CharactersPage />
+          ) : (
+            <LoginPage />
+          )
+        }
       ></Route>
       <Route
         path="/:id"
-        element={isLoggedIn || token ? <SingleCharacterPage /> : <LoginPage />}
+        element={
+          isLoggedIn || tokenFb || tokenGoogle ? (
+            <SingleCharacterPage />
+          ) : (
+            <LoginPage />
+          )
+        }
       ></Route>
       <Route
         path="*"
-        element={isLoggedIn || token ? <NotFoundPage /> : <LoginPage />}
+        element={
+          isLoggedIn || tokenFb || tokenGoogle ? (
+            <NotFoundPage />
+          ) : (
+            <LoginPage />
+          )
+        }
       ></Route>
     </Routes>
   );

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { getIsLoggedIn } from "redux/auth/authSelectors";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { Link, useNavigate } from "react-router-dom";
@@ -14,6 +15,7 @@ import {
 } from "../../redux/characters/characters-selectors";
 
 const CharactersList = () => {
+  const isLoggedIn = useSelector(getIsLoggedIn);
   const token = localStorage.getItem("fblst_519590290217663");
   console.log(token);
 
@@ -33,18 +35,18 @@ const CharactersList = () => {
     if (filter !== "") return;
 
     setPageSingleCharacter(1);
-    if (token !== null) {
+    if (token !== null || isLoggedIn) {
       navigate({ search: `page=${pageAllCharactes}` });
     }
 
     dispatch(getCharacters(pageAllCharactes));
-  }, [dispatch, filter, navigate, pageAllCharactes, token]);
+  }, [dispatch, filter, isLoggedIn, navigate, pageAllCharactes, token]);
 
   useEffect(() => {
     if (filter === "") return;
 
     setPageAllCharactes(1);
-    if (token !== null) {
+    if (token !== null || isLoggedIn) {
       navigate({ search: `page=${pageSingleCharacter}` });
     }
 
@@ -53,7 +55,7 @@ const CharactersList = () => {
       name: filter,
     };
     dispatch(searchCharacter(queryParams));
-  }, [dispatch, filter, navigate, pageSingleCharacter, token]);
+  }, [dispatch, filter, isLoggedIn, navigate, pageSingleCharacter, token]);
 
   const query = useSelector(getQuery);
   // console.log("query", query);
@@ -73,7 +75,7 @@ const CharactersList = () => {
   const handleChangePageAll = (event, page) => {
     setPageAllCharactes(page);
 
-    if (token !== null) {
+    if (token !== null || isLoggedIn) {
       navigate({ search: `page=${page}` });
     }
   };
@@ -81,7 +83,7 @@ const CharactersList = () => {
   const handleChangePageSingle = (event, page) => {
     setPageSingleCharacter(page);
 
-    if (token !== null) {
+    if (token !== null || isLoggedIn) {
       navigate({ search: `page=${page}` });
     }
   };
